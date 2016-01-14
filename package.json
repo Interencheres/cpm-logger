@@ -1,0 +1,46 @@
+{
+  "name": "cpm-logger",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Wrapper for bunyan",
+  "private": "true",
+  "main": "logger.js",
+  "scripts": {
+    "tests:syntax": "npm run tests:jshint && npm run tests:jscs",
+    "tests:jshint": "jshint .",
+    "tests:jscs": "jscs ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interencheres/cpm-logger.git"
+  },
+  "author": "Team CPmultimedia",
+  "contributors": [
+    {
+      "name": "Team CPMultimedia",
+      "email": "dt@cpmultimedia.com",
+      "url": "http://www.interencheres.com/"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/interencheres/cpm-logger/issues"
+  },
+  "keywords": [
+    "log",
+    "bunyan",
+    "logstash",
+    "files"
+  ],
+  "homepage": "https://github.com/interencheres/cpm-logger#readme",
+  "engines": {
+    "node": "4.2.x"
+  },
+  "dependencies": {
+    "bunyan": "^1.5.1",
+    "bunyan-logstash": "^0.3.4"
+  },
+  "devDependencies": {
+    "jscs": "^2.5.1",
+    "jshint": "^2.8.0"
+  }
+}

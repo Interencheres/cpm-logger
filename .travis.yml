@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "4.2"
+  - "5"
+branches:
+  only:
+    - master
+before_script:
+  - npm install
+script:
+  - npm run tests:syntax -s
+matrix:
+  allow_failures:
+    - node_js : "5"
+  fast_finish: true
