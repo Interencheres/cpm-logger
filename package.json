@@ -32,8 +32,8 @@
     "files"
   ],
   "homepage": "https://github.com/interencheres/cpm-logger#readme",
-  "engines": {
-    "node": "4.2.x"
+  "engine": {
+      "node": ">=4.2"
   },
   "dependencies": {
     "bunyan": "^1.5.1",
