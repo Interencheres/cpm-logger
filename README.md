@@ -5,7 +5,7 @@ Wrapper for [node-bunyan](https://github.com/trentm/node-bunyan).
 
 ### Initialization
 ```javascript
-const logger = require("cpm-logger")(configJSON);
+const logger = require("cpm-logger").init(configJSON);
 ```
 
 ### Configuration
