@@ -33,11 +33,12 @@
   ],
   "homepage": "https://github.com/interencheres/cpm-logger#readme",
   "engine": {
-      "node": ">=4.2"
+    "node": ">=4.2"
   },
   "dependencies": {
     "bunyan": "^1.5.1",
-    "bunyan-logstash": "^0.3.4"
+    "bunyan-logstash": "^0.3.4",
+    "morgan": "^1.9.0"
   },
   "devDependencies": {
     "jscs": "^2.5.1",
