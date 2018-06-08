@@ -17,7 +17,7 @@ const headersToLog = ["x-cpm-request-id", "x-cpm-device-id"];
  *
  * @return {Object}        Middleware morgan
  */
-function initMorganLogger (config, logger) {
+function initMorganLogger (logger) {
     let logFormat = ":method :url :status :response-time ms :req[x-cpm-request-id] :req[x-cpm-device-id]";
 
     /* istanbul ignore next */
@@ -121,12 +121,25 @@ function init (config) {
         name: config.name,
         src: true,
         streams: streams
+    }).child({
+        "@timestamp": new Date().toISOString()
+    });
+
+    const apiLogger = logger.child({
+        /*jshint ignore:start*/
+        message_type: "api"
+        /*jshint ignore:end*/
+    });
+    const morganLogger = logger.child({
+        /*jshint ignore:start*/
+        message_type: "access"
+        /*jshint ignore:end*/
     });
 
     return {
-        logger: logger,
-        loggerMiddleware: attachToReq(logger),
-        morganMiddleware: initMorganLogger(config, logger)
+        logger: apiLogger,
+        loggerMiddleware: attachToReq(apiLogger),
+        morganMiddleware: initMorganLogger(morganLogger)
     };
 
 }
