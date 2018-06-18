@@ -3,12 +3,33 @@
 const bunyan = require("bunyan");
 const bunyanLogstash = require("bunyan-logstash");
 const morgan = require("morgan");
+const fs = require("fs");
 
 const env = process.env.NODE_ENV || "production";
 const envLogLevel = process.env.ENV_LOG_LEVEL || "warn";
 const debug = process.env.DEBUG_ENV || false;
 
 const headersToLog = ["x-cpm-request-id", "x-cpm-device-id"];
+
+/**
+ * Edit default bunyan file stream to insert @timestamp to please kibana
+ *
+ * @param  {Object} config Log section of config
+ *
+ * @return {function}      Write function to be used by bunyan
+ */
+function modifiedStream (config) {
+    const writableStream = fs.createWriteStream(`${config.files.path}/${config.files.name}.log`);
+  return {
+    write: incomingLogLine => {
+        const outgoingLogLine = Object.assign(
+            JSON.parse(incomingLogLine),
+            { "@timestamp": new Date().toISOString() }
+        );
+        writableStream.write(`${JSON.stringify(outgoingLogLine, bunyan.safeCycles())}\n`);
+    }
+  };
+}
 
 /**
  * Generate Morgan middleware to create access.log styled logs
@@ -96,9 +117,8 @@ function init (config) {
 
     if (config.files.enable) {
         streams.push({
-            type: "file",
-            path: `${config.files.path}/${config.files.name}.log`,
-            level: config.files.level
+            level: config.files.level,
+            stream: modifiedStream(config)
         });
     }
 
@@ -121,8 +141,6 @@ function init (config) {
         name: config.name,
         src: true,
         streams: streams
-    }).child({
-        "@timestamp": new Date().toISOString()
     });
 
     const apiLogger = logger.child({
