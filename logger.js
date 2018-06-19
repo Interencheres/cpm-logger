@@ -142,7 +142,7 @@ function init (config) {
 
     const logger = bunyan.createLogger({
         name: config.name,
-        src: true,
+        src: env !== "production",
         streams: streams
     });
 
