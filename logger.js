@@ -19,16 +19,19 @@ const headersToLog = ["x-cpm-request-id", "x-cpm-device-id"];
  * @return {function}      Write function to be used by bunyan
  */
 function modifiedStream (config) {
-    const writableStream = fs.createWriteStream(`${config.files.path}/${config.files.name}.log`);
-  return {
-    write: incomingLogLine => {
-        const outgoingLogLine = Object.assign(
-            JSON.parse(incomingLogLine),
-            { "@timestamp": new Date().toISOString() }
-        );
-        writableStream.write(`${JSON.stringify(outgoingLogLine, bunyan.safeCycles())}\n`);
-    }
-  };
+    const writableStream = fs.createWriteStream(
+        `${config.files.path}/${config.files.name}.log`,
+        { flags: "a", encoding: "utf8" }
+    );
+    return {
+        write: incomingLogLine => {
+            const outgoingLogLine = Object.assign(
+                JSON.parse(incomingLogLine),
+                { "@timestamp": new Date().toISOString() }
+            );
+            writableStream.write(`${JSON.stringify(outgoingLogLine, bunyan.safeCycles())}\n`);
+        }
+    };
 }
 
 /**
