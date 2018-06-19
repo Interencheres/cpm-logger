@@ -23,15 +23,15 @@ function modifiedStream (config) {
         `${config.files.path}/${config.files.name}.log`,
         { flags: "a", encoding: "utf8" }
     );
-  return {
-    write: incomingLogLine => {
-        const outgoingLogLine = Object.assign(
-            JSON.parse(incomingLogLine),
-            { "@timestamp": new Date().toISOString() }
-        );
-        writableStream.write(`${JSON.stringify(outgoingLogLine, bunyan.safeCycles())}\n`);
-    }
-  };
+    return {
+        write: incomingLogLine => {
+            const outgoingLogLine = Object.assign(
+                JSON.parse(incomingLogLine),
+                { "@timestamp": new Date().toISOString() }
+            );
+            writableStream.write(`${JSON.stringify(outgoingLogLine, bunyan.safeCycles())}\n`);
+        }
+    };
 }
 
 /**
