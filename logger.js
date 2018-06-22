@@ -89,7 +89,7 @@ function attachToReq (logger) {
         headersToLog.forEach(headerName => {
             const header = req.headers[headerName];
             if (!header) {
-                logger.warn(`Request on ${req.originalUrl} has no '${headerName}' header`);
+                logger.debug(`Request on ${req.originalUrl} has no '${headerName}' header`);
             } else {
                 headers[headerName] = header;
             }
