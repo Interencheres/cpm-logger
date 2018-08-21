@@ -6,9 +6,8 @@
   "private": "true",
   "main": "logger.js",
   "scripts": {
-    "tests:syntax": "npm run tests:jshint && npm run tests:jscs",
-    "tests:jshint": "jshint .",
-    "tests:jscs": "jscs ."
+    "tests:eslint": "eslint .",
+    "tests:syntax": "npm run tests:eslint"
   },
   "repository": {
     "type": "git",
@@ -37,11 +36,9 @@
   },
   "dependencies": {
     "bunyan": "^1.5.1",
-    "bunyan-logstash": "^0.3.4",
     "morgan": "^1.9.0"
   },
   "devDependencies": {
-    "jscs": "^2.5.1",
-    "jshint": "^2.8.0"
+    "eslint": "^4.12.1"
   }
 }
