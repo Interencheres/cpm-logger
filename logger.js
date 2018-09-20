@@ -44,8 +44,6 @@ function modifiedStream (config) {
 function initMorganLogger (logger) {
     let logFormat = ":method :url :status :response-time ms :req[x-cpm-request-id] :req[x-cpm-device-id]";
 
-    /* istanbul ignore next */
-    /*jshint ignore:start*/
     if (env === "production") {
         logFormat = JSON.stringify({
             request_method: ":method",
@@ -57,7 +55,6 @@ function initMorganLogger (logger) {
             msg: ":method :url :status :response-time"
         });
     }
-    /*jshint ignore:end*/
 
     const stream = {
         write: function (message) {
@@ -147,14 +144,10 @@ function init (config) {
     });
 
     const apiLogger = logger.child({
-        /*jshint ignore:start*/
         message_type: "api"
-        /*jshint ignore:end*/
     });
     const morganLogger = logger.child({
-        /*jshint ignore:start*/
         message_type: "access"
-        /*jshint ignore:end*/
     });
 
     return {
