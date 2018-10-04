@@ -9,7 +9,7 @@ const env = process.env.NODE_ENV || "production";
 const envLogLevel = process.env.ENV_LOG_LEVEL || "warn";
 const debug = process.env.DEBUG_ENV || false;
 
-const headersToLog = ["x-cpm-request-id", "x-cpm-device-id"];
+let headersToLog = ["x-cpm-request-id", "x-cpm-device-id"];
 
 /**
  * Edit default bunyan file stream to insert @timestamp to please kibana
@@ -42,18 +42,25 @@ function modifiedStream (config) {
  * @return {Object}        Middleware morgan
  */
 function initMorganLogger (logger) {
-    let logFormat = ":method :url :status :response-time ms :req[x-cpm-request-id] :req[x-cpm-device-id]";
+    let headersLogFormat = headersToLog.reduce((header, acc) => {
+        return `${acc} :req[${header}]`;
+    });
+    let logFormat = `:method :url :status :response-time ms${headersLogFormat}`;
 
     if (env === "production") {
-        logFormat = JSON.stringify({
+        logFormat = {
             request_method: ":method",
             response_status: ":status",
             request_url: ":url",
-            "x-cpm-request-id": ":req[x-cpm-request-id]",
-            "x-cpm-device-id": ":req[x-cpm-device-id]",
             request_time: ":response-time",
             msg: ":method :url :status :response-time"
+        };
+
+        headersToLog.forEach(header => {
+            logFormat[header] = `:req[${header}]`;
         });
+
+        logFormat = JSON.stringify(logFormat);
     }
 
     const stream = {
@@ -107,6 +114,10 @@ function attachToReq (logger) {
  */
 function init (config) {
     let streams = [];
+
+    if (config.headersToLog) {
+        headersToLog = config.headersToLog;
+    }
 
     if (env === "development" || debug) {
         streams.push({
