@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const fs = require("fs");
 
 const env = process.env.NODE_ENV || "production";
+const envLogConsole = process.env.ENV_LOG_CONSOLE === "true";
 const envLogLevel = process.env.ENV_LOG_LEVEL || "warn";
 const debug = process.env.DEBUG_ENV || false;
 
@@ -119,7 +120,7 @@ function init (config) {
         headersToLog = config.headersToLog;
     }
 
-    if (env === "development" || debug) {
+    if (envLogConsole || env === "development" || debug) {
         streams.push({
             level: envLogLevel,
             stream: process.stdout
