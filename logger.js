@@ -91,17 +91,18 @@ function initMorganLogger (logger) {
 function attachToReq (logger) {
     return (req, res, next) => {
         let headers = {};
-        headersToLog.forEach(headerName => {
-            const header = req.headers[headerName];
-            if (!header) {
-                logger.debug(`Request on ${req.originalUrl} has no '${headerName}' header`);
-            } else {
-                headers[headerName] = header;
-            }
-        });
-
+        // Ignore missing headers on /v1/status
+        if (!req.url.match(/\/v[0-9]+\/status/i)) {
+            headersToLog.forEach(headerName => {
+                const header = req.headers[headerName];
+                if (!header) {
+                    logger.debug(`Request on ${req.originalUrl} has no '${headerName}' header`);
+                } else {
+                    headers[headerName] = header;
+                }
+            });
+        }
         req.logger = logger.child(headers);
-
         next();
     };
 }
