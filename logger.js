@@ -8,6 +8,7 @@ const fs = require("fs");
 const env = process.env.NODE_ENV || "production";
 const envLogConsole = process.env.ENV_LOG_CONSOLE === "true";
 const envLogLevel = process.env.ENV_LOG_LEVEL || "warn";
+const envLogDisableStatus = process.env.ENV_LOG_DISABLE_STATUS || false;
 const debug = process.env.DEBUG_ENV || false;
 
 let headersToLog = ["x-cpm-request-id", "x-cpm-device-id"];
@@ -101,8 +102,9 @@ function attachToReq (logger) {
                     headers[headerName] = header;
                 }
             });
+        } else if (!envLogDisableStatus) {
+            req.logger = logger.child(headers);
         }
-        req.logger = logger.child(headers);
         next();
     };
 }
