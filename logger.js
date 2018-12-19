@@ -8,8 +8,10 @@ const fs = require("fs");
 const env = process.env.NODE_ENV || "production";
 const envLogConsole = process.env.ENV_LOG_CONSOLE === "true";
 const envLogLevel = process.env.ENV_LOG_LEVEL || "warn";
+const envLogDisableStatus = process.env.ENV_LOG_DISABLE_STATUS || false;
 const debug = process.env.DEBUG_ENV || false;
 
+const statusRouteRegex = RegExp(/\/v[0-9]+\/status/i);
 let headersToLog = ["x-cpm-request-id", "x-cpm-device-id"];
 
 /**
@@ -79,7 +81,10 @@ function initMorganLogger (logger) {
         }
     };
 
-    return morgan(logFormat, { stream: stream });
+    return morgan(logFormat, { stream: stream, skip: function (req) {
+        return envLogDisableStatus ? statusRouteRegex.test(req.originalUrl) : false;
+    }
+    });
 }
 
 /**
@@ -92,7 +97,7 @@ function attachToReq (logger) {
     return (req, res, next) => {
         let headers = {};
         // Ignore missing headers on /v1/status
-        if (!req.url.match(/\/v[0-9]+\/status/i)) {
+        if (!statusRouteRegex.test(req.originalUrl)) {
             headersToLog.forEach(headerName => {
                 const header = req.headers[headerName];
                 if (!header) {
