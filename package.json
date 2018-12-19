@@ -37,7 +37,7 @@
   "dependencies": {
     "bunyan": "^1.5.1",
     "bunyan-logstash": "^0.3.4",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "eslint": "^4.12.1"
