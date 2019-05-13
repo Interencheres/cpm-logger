@@ -74,7 +74,7 @@ function initMorganLogger (logger) {
                 // We mark requests logs for kibana
                 message.source = "router";
 
-                logger.info(message, message.msg);
+                logger.debug(message, message.msg);
             } else {
                 logger.info(message);
             }
