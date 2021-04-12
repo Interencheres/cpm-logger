@@ -70,11 +70,12 @@ function initMorganLogger (logger) {
         write: function (message) {
             /* istanbul ignore next */
             if (env === "production") {
-                message = JSON.parse(message);
-                // We mark requests logs for kibana
-                message.source = "router";
-
-                logger.debug(message, message.msg);
+                try {
+                    message = JSON.parse(message);
+                    logger.debug(message, message.msg);
+                } catch (error) {
+                    logger.debug(`Could not parse JSON: ${message}`);
+                }
             } else {
                 logger.info(message);
             }
