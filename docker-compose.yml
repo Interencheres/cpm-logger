@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  cpm-logger-node:
+    build: ${CPM_LOGGER_PATH:-.}/docker/node
+    image: 776403767600.dkr.ecr.eu-west-1.amazonaws.com/cpm-logger:1.0.0
+    volumes:
+      - ${CPM_LOGGER_PATH:-./}:/srv/cpm-logger/:cached
+    environment:
+      UID: ${USER_UID?-Please export your UID in env var USER_UID}
+      GID: ${USER_GID?-Please export your GID in env var USER_GID}

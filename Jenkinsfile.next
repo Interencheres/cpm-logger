@@ -1,0 +1,15 @@
+indbApplication([
+    tests: [
+        "Test lint": [
+            "service": "cpm-logger-node",
+            "script": "npm run tests:eslint"
+        ]
+    ],
+    build: [
+            "service": "cpm-logger-node"
+    ],
+    publish: [
+            "service": "cpm-logger-node",
+            "type": "npm"
+    ]
+])
