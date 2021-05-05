@@ -1,7 +1,6 @@
 "use strict";
 
 const bunyan = require("bunyan");
-const bunyanLogstash = require("bunyan-logstash");
 const morgan = require("morgan");
 const fs = require("fs");
 
@@ -138,21 +137,6 @@ function init (config) {
         streams.push({
             level: config.files.level,
             stream: modifiedStream(config)
-        });
-    }
-
-    if (config.logstash.enable) {
-        streams.push({
-            type: "raw",
-            stream: bunyanLogstash.createStream({
-                application: config.logstash.name,
-                host: config.logstash.host,
-                port: config.logstash.port,
-                level: config.logstash.level,
-                tags: [
-                    config.logstash.name
-                ]
-            })
         });
     }
 
